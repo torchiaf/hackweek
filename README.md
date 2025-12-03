@@ -5,9 +5,6 @@ Hack Week is an opportunity for developers, designers, and other team members to
 
 ## Projects
 
-### **2023 - Critik8s**  
-    https://hackweek.opensuse.org/25/projects/critik8s
-### **2024 - Rancher microfrontend extensions**
-    https://hackweek.opensuse.org/25/projects/rancher-microfrontend-extension
-### **[2025 - Liz Autocomplete](./projects/2025-liz-autocomplete)**  
-    https://hackweek.opensuse.org/25/projects/liz-prompt-autocomplete
+### **[2025 - Liz Autocomplete](./projects/2025-liz-autocomplete)**
+### **[2024 - Rancher microfrontend extensions](./projects/2024-rancher-microfrontend-extensions)**
+### **[2023 - Critik8s](./projects/2023-critik8s)**
