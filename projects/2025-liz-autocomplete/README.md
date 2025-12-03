@@ -36,40 +36,48 @@ The endpoint will stop previous requests when a new one is made to ensure real-t
 ```mermaid
 graph TD
     A[Current user input] --> E[ws/autocomplete]
-    B[Chat history] --> E
+    B[Chat messages] --> E
     C[UI context] --> E
     D[Resource search markdown] --> E
-    E -->|Stop previous requests| F[LLM]
+    E -->|&nbsp;Stop previous request&nbsp;| F[LLM]
     F --> G[Autocomplete suggestions]
     F --> H[Resource list &lt;item&gt;&lt;/item&gt;]
     
     style E fill:#496192,stroke:#333,stroke-width:2px,color:#fff
+    style F fill:#35B777,stroke:#333,stroke-width:2px,color:#fff
 ```
 
-### Additional Agent Features
+### Additional Features - Chat History Persistence
 
-- The agent can now store data in a Redis database, to store Chats and Messages and handle User's permissions.
-- The agent is now able to call Rancher API to get user information and associate user IDs with the Chats.
+- The agent now handles **multiple users** and chats; it calls the Rancher API to get user information and associate user IDs with the Chats.
+- The frontend can now connect to the `ws/messages/{chatID}` endpoint to get messages for a specific chat.
+- The agent can now store the **chats history** in a Redis database, and handle user permissions. Redis is used as a cache for fast read / write operations.
 - The DB supervisor running in a separate pod is in charge of syncing the Redis cache with a MYSQL database.
 - The agent exposes a new `ws/summary` endpoint to summarize the current conversation to assign a name to old conversations.
 - The DB supervisor assign names to old conversations by calling the `ws/summary` endpoint.
-- The Rest API server provides the chats history to the frontend.
+- The Rest API server provides access to the chats history to the frontend.
 
 ```mermaid
 graph TD
-    B -->|Get user| A[Rancher]
-    B[Agent Pod] <-->|Read / Write| C[Redis Pod]
+    B -->|&nbsp;Get user&nbsp;| A[Rancher]
+    B[Agent Pod] <-->|&nbsp;Read / Write&nbsp;| C[Redis Pod]
     
-    subgraph Pod[DB Pod]
+    subgraph DB_Pod["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB Pod"]
         D[MySql]
         E[DB Supervisor]
-        E -->|Write| D
+        E ---|&nbsp;Sync&nbsp;| D
     end
     
-    C -->|Read| E
-    B -->|Check Chat permissions| D
-    E -->|ws/summary| B
-    F[Rest API Pod] -->|Get Chats| D
+    C ---|&nbsp;Sync&nbsp;| E
+    B -->|&nbsp;Check Chat permissions&nbsp;| D
+    E -->|&nbsp;ws/summary&nbsp;| B
+    F[Rest API Pod] -->|&nbsp;Get Chats&nbsp;| D
+
+    style D fill:#87CEEB,stroke:#333,stroke-width:2px,color:#000
+    style E fill:#87CEEB,stroke:#333,stroke-width:2px,color:#000
+    style C fill:#496192,stroke:#333,stroke-width:2px,color:#fff
+    style DB_Pod fill:#496192,stroke:#333,stroke-width:2px,color:#fff
+    style F fill:#496192,stroke:#333,stroke-width:2px,color:#fff
 ```
 
 ### Installation
