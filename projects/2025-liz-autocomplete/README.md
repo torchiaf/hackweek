@@ -29,16 +29,48 @@ The Agent exposes a new `ws/autocomplete` endpoint to get autocomplete suggestio
 - Current user input
 - Chat history
 - UI context
+- Resource search markdown
 
 The endpoint will stop previous requests when a new one is made to ensure real-time responsiveness.
 
+```mermaid
+graph TD
+    A[Current user input] --> E[ws/autocomplete]
+    B[Chat history] --> E
+    C[UI context] --> E
+    D[Resource search markdown] --> E
+    E -->|Stop previous requests| F[LLM]
+    F --> G[Autocomplete suggestions]
+    F --> H[Resource list &lt;item&gt;&lt;/item&gt;]
+    
+    style E fill:#496192,stroke:#333,stroke-width:2px,color:#fff
+```
+
 ### Additional Agent Features
 
-- The agent can now store conversation history in a Redis database, and a DB manager that saves/restores the history in a MYSQL database.
+- The agent can now store data in a Redis database, to store Chats and Messages and handle User's permissions.
+- The agent is now able to call Rancher API to get user information and associate user IDs with the Chats.
+- The DB supervisor running in a separate pod is in charge of syncing the Redis cache with a MYSQL database.
 - The agent exposes a new `ws/summary` endpoint to summarize the current conversation to assign a name to old conversations.
-- The AI chart now deploys a Rest API server to provide the chats history to the frontend.
+- The DB supervisor assign names to old conversations by calling the `ws/summary` endpoint.
+- The Rest API server provides the chats history to the frontend.
 
-**TODO**: add gif
+```mermaid
+graph TD
+    B -->|Get user| A[Rancher]
+    B[Agent Pod] <-->|Read / Write| C[Redis Pod]
+    
+    subgraph Pod[DB Pod]
+        D[MySql]
+        E[DB Supervisor]
+        E -->|Write| D
+    end
+    
+    C -->|Read| E
+    B -->|Check Chat permissions| D
+    E -->|ws/summary| B
+    F[Rest API Pod] -->|Get Chats| D
+```
 
 ### Installation
 
