@@ -19,7 +19,7 @@ Liz can provide autocomplete suggestions, showing button hints to select the ent
 
 ![alt text](./assets/image.png)
 
-Dropdown suggestion list appears as users type `@` + resource name.
+Liz can provide a list of resources to complete the user's requests when typing `@` + resource prefix.
 
 ![dropdown](./assets/dropdown.gif)
 
