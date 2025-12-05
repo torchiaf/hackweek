@@ -21,7 +21,7 @@ Liz can provide autocomplete suggestions, showing button hints to select the ent
 
 Dropdown suggestion list appears as users type `@` + resource name.
 
-**TODO**: add gif
+![dropdown](./assets/dropdown.gif)
 
 ### AI Agent
 
