@@ -112,9 +112,9 @@ graph TD
 - Rancher UI assistant extension
 
   ```bash
-  git remote add volodymyr https://github.com/volodymyrkatkalov/rancher-ai-ui.git
-  git fetch volodymyr arahja
-  git checkout volodymyr/arahja
+  git remote add fra https://github.com/torchiaf/rancher-ai-ui.git
+  git fetch fra hw-autocomplete
+  git checkout fra/hw-autocomplete
 
   # install yarn and node first
   yarn install
@@ -124,8 +124,8 @@ graph TD
 ### Resources
 
 UI extension
-  - Repo: https://github.com/volodymyrkatkalov/rancher-ai-ui
-  - Branch: arahja
+  - Repo: https://github.com/torchiaf/rancher-ai-ui
+  - Branch: hw-autocomplete
 
 Agent
   - Repo: https://github.com/torchiaf/rancher-ai-agent
