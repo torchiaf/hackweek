@@ -52,7 +52,7 @@ graph TD
 - The agent now handles **multiple users** and chats; it calls the Rancher API to get user information and associate user IDs with the Chats.
 - The frontend can now connect to the `ws/messages/{chatID}` endpoint to get messages for a specific chat.
 - The agent can now store the **chats history** in a Redis database, and handle user permissions. Redis is used as a cache for fast read / write operations.
-- The DB supervisor running in a separate pod is in charge of syncing the Redis cache with a MYSQL database.
+- The DB supervisor running in a separate pod is in charge of syncing the Redis cache with a MySQL database.
 - The agent exposes a new `ws/summary` endpoint to summarize the current conversation to assign a name to old conversations.
 - The DB supervisor assign names to old conversations by calling the `ws/summary` endpoint.
 - The Rest API server provides access to the chats history to the frontend.
@@ -63,15 +63,17 @@ graph TD
     B[Agent Pod] <-->|&nbsp;Read / Write&nbsp;| C[Redis Pod]
     
     subgraph DB_Pod["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB Pod"]
-        D[MySql]
+        D[MySQL]
         E[DB Supervisor]
         E ---|&nbsp;Sync&nbsp;| D
     end
     
     C ---|&nbsp;Sync&nbsp;| E
-    B -->|&nbsp;Check Chat permissions&nbsp;| D
+    B -->|&nbsp;Check chatID permissions&nbsp;| D
     E -->|&nbsp;ws/summary&nbsp;| B
     F[Rest API Pod] -->|&nbsp;Get Chats&nbsp;| D
+    G[Frontend] -->|&nbsp;ws/messages ws/messages/&lcub;chatID&rcub; ws/autocomplete&nbsp;| B
+    G -->|&nbsp;Http GET /chats&nbsp;| F
 
     style D fill:#87CEEB,stroke:#333,stroke-width:2px,color:#000
     style E fill:#87CEEB,stroke:#333,stroke-width:2px,color:#000
